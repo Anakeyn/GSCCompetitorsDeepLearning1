@@ -117,9 +117,11 @@ X_train, X_test, y_train, y_test = train_test_split(X_Scaled,y, random_state=42)
 X_train.shape
 #(9145, 61)
 
+
+##############################################################
 #Réseau de Neurones
 
-unitsNumber = 64  #nombre de neurones par couche
+unitsNumber = 40  #nombre de neurones par couche  cachée #(~2/3*( 61+1))
 
 #Define Sample Neural Network Model  with 2 hidden layers
 model = models.Sequential()  #
@@ -138,8 +140,12 @@ model.compile(optimizer='rmsprop',loss='binary_crossentropy',metrics=['acc'])
 
 
 #Fit the model to data
-history = model.fit(X_train, y_train, epochs=20, batch_size=16, validation_data=(X_test, y_test))
+history = model.fit(X_train, y_train, epochs=30, batch_size=16, validation_data=(X_test, y_test))
 
+
+
+############################################################
+#Graphiques  et  résultats
 history_dict = history.history
 history_dict.keys()
 # dict_keys(['val_loss', 'val_acc', 'loss', 'acc'])
@@ -149,6 +155,7 @@ val_loss_values = history_dict['val_loss']
 acc = history_dict['acc']
 val_acc = history_dict['val_acc'] #ce qui nous intéresse
 epochs = range(1, len(acc) + 1)
+
 
 #perte
 plt.plot(epochs, loss_values, 'bo', label='Training loss')
@@ -174,12 +181,12 @@ plt.show()  #!!!!   affiche et remet à zéro => sauvegarder avant
 
 
 
-max(acc)  #meilleure  valeur de la précision sur le train set  0.8420995079278294
-acc.index(max(acc))  #19
+max(acc)  #meilleure  valeur de la précision sur le train set   0.8270092947030733
+acc.index(max(acc))  #29
 
-max(val_acc)  #meilleure  valeur de la précision de validation sur le test set  0.7458183011605177
+max(val_acc)  #meilleure  valeur de la précision de validation sur le test set  0.7448343719838681
 #Meilleur que xgBoost non optimisé : 0.734 mais moins bien que KNN 0.7553
-val_acc.index(max(val_acc))  #indice correspondant # 14
+val_acc.index(max(val_acc))  #indice correspondant # 9
 
 ##########################################################################
 # MERCI pour votre attention !
